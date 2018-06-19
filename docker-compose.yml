@@ -1,0 +1,39 @@
+version: '3.3'
+
+networks:
+  default:
+    external:
+      name: research-coder
+
+services:
+
+  rc-encodings:
+    container_name: rc-encodings-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./:/app
+    environment:
+      RABBITMQ_HOST: rc-rabbitmq
+      MYSQL_HOST: rc-encodings-db
+      MYSQL_DB: encodings
+      MYSQL_USER: root
+      MYSQL_PASS: secret
+    ports:
+      - 8006:80
+
+  rc-encodings-db:
+    image: mysql:5.7
+    container_name: rc-encodings-db-dev
+    ports:
+      - 33063:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: encodings
+
+  rc-rabbitmq:
+    image: "rabbitmq:3-management"
+    ports:
+      - "15672:15672"
+      - "5672:5672"

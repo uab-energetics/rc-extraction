@@ -1,0 +1,49 @@
+{
+  "name": "rc-encodings",
+  "version": "1.0.2",
+  "description": "Encodings microservice for Research Coder",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "seed-db": "node dist/seed-db.js",
+    "serve": "node dist/server.js",
+    "watch": "concurrently -k -p '[{name}]' -n 'TypeScript,Node' -c 'yellow.bold,cyan.bold,green.bold' 'npm run watch-ts' 'npm run watch-node'",
+    "watch-ts": "tsc -w",
+    "watch-node": "nodemon dist/server.js",
+    "test": "jest --forceExit --coverage --verbose"
+  },
+  "keywords": [],
+  "author": "Chris Rocco",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "amqplib": "^0.5.2",
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "commander": "^2.15.1",
+    "cors": "^2.8.4",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "express-http-proxy": "^1.2.0",
+    "express-validator": "^5.2.0",
+    "joi": "^13.3.0",
+    "lodash": "^4.17.10",
+    "morgan": "^1.9.0",
+    "mysql": "^2.15.0",
+    "rxjs": "^6.1.0",
+    "typeorm": "^0.2.6",
+    "uuid": "^3.2.1"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^4.0.3",
+    "@types/express": "^4.11.1",
+    "@types/jest": "^22.2.3",
+    "@types/node": "^10.1.0",
+    "concurrently": "^3.5.1",
+    "jest": "^22.4.3",
+    "nodemon": "^1.17.4",
+    "supertest": "^3.1.0",
+    "ts-jest": "^22.4.6",
+    "ts-node": "^6.0.3",
+    "typescript": "^2.8.3"
+  }
+}
