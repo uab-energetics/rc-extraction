@@ -9,10 +9,12 @@ const dummyInstanceParams = {
     codebookVersion: "1.0.0"
 }
 
+const dummyEvent = (data) => {}
+
 
 test('instance creation and deletion', async (done) => {
     const connection = await getDBConnection()
-    let service = getInstanceService(connection)
+    let service = getInstanceService(connection, dummyEvent)
 
 
     // create instance
@@ -36,7 +38,7 @@ test('instance creation and deletion', async (done) => {
 
 test('instance retrieval by project', async (done) => {
     const connection = await getDBConnection()
-    let service = getInstanceService(connection)
+    let service = getInstanceService(connection, dummyEvent)
 
     let instances = []
 
@@ -66,7 +68,7 @@ test('instance retrieval by project', async (done) => {
 
 test('instance updating', async (done) => {
     const connection = await getDBConnection()
-    let service = getInstanceService(connection)
+    let service = getInstanceService(connection, dummyEvent)
 
     let instance = await service.create(dummyInstanceParams)
     const newDescription = "new description"

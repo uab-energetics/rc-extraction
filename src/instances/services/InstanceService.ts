@@ -1,14 +1,19 @@
 import {Connection, Repository} from "typeorm";
 import {Instance} from "../models/Instance";
+import {instanceCreated, instanceDeleted, instanceUpdated} from "../events/instance-events";
 
-export const getInstanceService = (dbConn: Connection): InstanceService => {
+
+export const getInstanceService = (dbConn: Connection, eventHelper): InstanceService => {
     const repository = dbConn.getRepository(Instance)
-    return new InstanceService(repository)
+    return new InstanceService(repository, eventHelper)
 }
 
 export class InstanceService {
 
-    constructor(private repository: Repository<Instance>) {}
+    constructor (
+        private repository: Repository<Instance>,
+        private event
+    ) {}
 
     async retrieveOne (id: string): Promise<Instance> {
         return await this.repository.findOne(id)
@@ -21,18 +26,19 @@ export class InstanceService {
     async create (params: Object): Promise<Instance> {
         let instance = await this.repository.create(params)
         await this.repository.save(instance)
-        // TODO: emit event
+        this.event(instanceCreated(instance))
         return instance
     }
 
     async update (id: string, params: Object): Promise<Instance> {
         await this.repository.update(id, params)
-        // TODO: emit event
-        return await this.retrieveOne(id)
+        const instance = await this.retrieveOne(id)
+        this.event(instanceUpdated(instance))
+        return instance
     }
 
     async delete (id: string): Promise<any> {
         await this.repository.delete(id)
-        // TODO: emit event
+        this.event(instanceDeleted(id))
     }
 }
