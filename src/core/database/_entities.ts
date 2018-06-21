@@ -1,7 +1,11 @@
-import {Repository} from "../../repositories/models/Repository";
-import {Publication} from "../../repositories/models/Publication";
+import {Publication} from "../../instances/models/Publication";
+import {Instance} from "../../instances/models/Instance";
+import {Task} from "../../instances/models/Task";
+import {User} from "../../instances/models/User";
 
 export const ENTITIES = [
-    Repository,
-    Publication
+    Instance,
+    Publication,
+    Task,
+    User
 ]

@@ -1,4 +1,4 @@
-FROM node:carbon
+FROM node:carbon as dependencies
 
 WORKDIR /app
 
@@ -6,6 +6,15 @@ COPY package*.json ./
 
 RUN npm install
 
+
+FROM node:carbon
+
+WORKDIR /app
+
 COPY . .
+
+RUN rm -rf node_modules
+
+COPY --from=dependencies /app/node_modules /app/node_modules
 
 CMD npm run watch

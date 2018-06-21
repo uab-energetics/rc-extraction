@@ -12,22 +12,21 @@ import {useRoute} from "./core/routing/route-builder";
 import {getEventHelper} from "./core/events/event";
 import {RouteNotFound} from "./core/errors/RouteNotFound";
 
+
+// load environment and config
+dotenv.config({ path: ".env" })
+const config = getConfigHelper(getConfig(process.env))
+
 /**
  * COMPOSITION ROOT
  * ========================
  */
 export const getApp = async () => {
 
-    // load environment and config
-    dotenv.config({ path: ".env" })
-    const config = getConfigHelper(getConfig(process.env))
-
-
     // connect to message broker
-    let { channel, connection } = await connectToRabbitMQ({ config })
+    let { channel, connection } = await getRabbitMQConnection()
 
-    // connect to mysql database
-    const dbConn = await connectToDB({ config })
+    const dbConn = await getDBConnection()
 
     // bootstrap express application
     const app = express()
@@ -49,4 +48,17 @@ export const getApp = async () => {
 
 
     return app
+}
+
+export const getRabbitMQConnection = async () => {
+    return await connectToRabbitMQ({ config })
+}
+
+let dbConn = null
+export const getDBConnection = async () => {
+    if (dbConn === null) {
+        // connect to mysql database
+        dbConn = await connectToDB({ config })
+    }
+    return dbConn
 }

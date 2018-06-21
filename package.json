@@ -1,7 +1,7 @@
 {
-  "name": "rc-encodings",
+  "name": "rc-extraction",
   "version": "1.0.2",
-  "description": "Encodings microservice for Research Coder",
+  "description": "Data Extraction microservice for Research Coder",
   "main": "dist/server.js",
   "scripts": {
     "build": "tsc",

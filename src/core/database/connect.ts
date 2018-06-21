@@ -6,6 +6,7 @@ import {DBConnectionError} from "./errors/DBConnectionError";
 export const connectToDB = async ({ config }) => {
     try {
         return await createConnection({
+            name: "default",
             type: "mysql",
             host: config('mysql.host'),
             port: 3306,
@@ -17,6 +18,7 @@ export const connectToDB = async ({ config }) => {
             logging: false
         })
     } catch (e) {
+        console.error(e)
         throw new DBConnectionError("Failed to connect to MySQL", config('mysql'))
     }
 }
