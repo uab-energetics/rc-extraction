@@ -25,7 +25,13 @@ export class InstanceService {
         return instance
     }
 
-    async delete (id: string) {
+    async update (id: string, params: Object): Promise<Instance> {
+        await this.repository.update(id, params)
+        // TODO: emit event
+        return await this.retrieveOne(id)
+    }
+
+    async delete (id: string): Promise<any> {
         await this.repository.delete(id)
         // TODO: emit event
     }

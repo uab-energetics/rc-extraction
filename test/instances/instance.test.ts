@@ -63,3 +63,19 @@ test('instance retrieval by project', async (done) => {
     }
     done()
 })
+
+test('instance updating', async (done) => {
+    const connection = await getDBConnection()
+    let service = getInstanceService(connection)
+
+    let instance = await service.create(dummyInstanceParams)
+    const newDescription = "new description"
+    instance = await service.update(instance.id, {
+        description: newDescription
+    })
+
+    expect(instance.description).toBe(newDescription)
+
+    await service.delete(instance.id)
+    done()
+})
