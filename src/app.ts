@@ -12,6 +12,7 @@ import {useRoute} from "./core/routing/route-builder";
 import {getEventHelper} from "./core/events/event";
 import {RouteNotFound} from "./core/errors/RouteNotFound";
 import {createInstanceRoute} from "./instances/routes/instances.create"
+import {deleteInstanceRoute} from "./instances/routes/instances.delete"
 
 
 // load environment and config
@@ -43,7 +44,7 @@ export const getApp = async () => {
     app.use(morgan('dev'))
 
     useRoute(app, createInstanceRoute({ dbConn, event }))
-
+    useRoute(app, deleteInstanceRoute({ dbConn, event }))
 
     app.use((req, res, next) => next(new RouteNotFound()))
 

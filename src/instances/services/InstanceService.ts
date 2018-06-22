@@ -1,4 +1,4 @@
-import {Connection, getRepository, Repository} from "typeorm"
+import {getRepository, Repository} from "typeorm"
 import {Instance} from "../models/Instance";
 import {instanceCreated, instanceDeleted, instanceUpdated} from "../events/instance-events";
 
@@ -46,5 +46,6 @@ export class InstanceService {
     async delete (id: string): Promise<any> {
         await this.repository.delete(id)
         this.event(instanceDeleted(id))
+        return true
     }
 }
