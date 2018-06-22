@@ -13,7 +13,7 @@ test('instances api', async () => {
     const app = await getApp()
     const projectId = 'test-project'
 
-    // create
+    // creating
     const createRes = await request(app)
         .post(`/projects/${projectId}/extraction-instances`)
         .send(dummyInstanceParams)
@@ -21,9 +21,15 @@ test('instances api', async () => {
     const instanceId = createRes.body.id
     expect(instanceId).toBeTruthy()
 
+    // updating
+    const updateRes = await request(app)
+        .put(`/projects/${projectId}/extraction-instances/${instanceId}`)
+        .send({description: "updated description"})
+    expect(updateRes.statusCode).toBe(200)
+    expect(updateRes.body.description).toBe("updated description")
 
-    // DELETION
 
+    // deleting
     const deleteWrongProjectRes = await request(app)
         .delete(`/projects/different-project/extraction-instances/${instanceId}`)
     expect(deleteWrongProjectRes.statusCode).toBe(400)

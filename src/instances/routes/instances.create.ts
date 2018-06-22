@@ -1,7 +1,7 @@
 import {Route} from "../../core/routing/Route"
 import {getInstanceService} from "../services/InstanceService"
 import {validateBody} from "../../core/validation/schema"
-import {InstanceSchema} from "../models/instance.schema"
+import {InstanceCreateSchema} from "../models/instanceCreateSchema"
 
 
 export const createInstanceRoute = ({dbConn, event}): Route => ({
@@ -12,7 +12,7 @@ export const createInstanceRoute = ({dbConn, event}): Route => ({
     mapper: (req, res) => ({ params: req.body, projectId: req.params.projectId }),
 
     validators: [
-        validateBody(InstanceSchema)
+        validateBody(InstanceCreateSchema)
     ],
 
     controller: async ({params, projectId}) => {
