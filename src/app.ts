@@ -11,6 +11,7 @@ import {connectToDB} from "./core/database/connect";
 import {useRoute} from "./core/routing/route-builder";
 import {getEventHelper} from "./core/events/event";
 import {RouteNotFound} from "./core/errors/RouteNotFound";
+import {createInstanceRoute} from "./instances/routes/instances.create"
 
 
 // load environment and config
@@ -40,6 +41,8 @@ export const getApp = async () => {
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({ extended: true }))
     app.use(morgan('dev'))
+
+    useRoute(app, createInstanceRoute({ dbConn, event }))
 
 
     app.use((req, res, next) => next(new RouteNotFound()))
