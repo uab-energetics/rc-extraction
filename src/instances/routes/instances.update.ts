@@ -1,10 +1,10 @@
 import {Route} from "../../core/routing/Route"
-import {getInstanceService} from "../services/InstanceService"
+import {InstanceService} from "../services/InstanceService"
 import {validateInstanceRequest} from "./instance-validators"
 import {validateBody} from "../../core/validation/schema"
 import {InstanceUpdateSchema} from "../models/instance-schemas"
 
-export const updateInstanceRoute = ({dbConn, event}): Route => ({
+export const updateInstanceRoute = (service: InstanceService): Route => ({
     path: '/projects/:projectId/extraction-instances/:instanceId',
 
     method: 'put',
@@ -16,12 +16,11 @@ export const updateInstanceRoute = ({dbConn, event}): Route => ({
     }),
 
     validators: [
-        validateInstanceRequest( getInstanceService(event) ),
+        validateInstanceRequest( service ),
         validateBody(InstanceUpdateSchema)
     ],
 
     controller: async ({instanceId, params}) => {
-        const service = getInstanceService(event)
         return service.update(instanceId, params)
     }
 })

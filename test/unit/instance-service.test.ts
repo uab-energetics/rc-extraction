@@ -1,5 +1,5 @@
-import {getDBConnection} from "../../src/app";
-import {getInstanceService, InstanceService} from "../../src/instances/services/InstanceService"
+import {getDBConnection, getInstanceService} from "../../src/app"
+import { InstanceService} from "../../src/instances/services/InstanceService"
 
 const dummyInstanceParams = {
     projectId: "test-project",
@@ -12,8 +12,8 @@ const dummyInstanceParams = {
 let service: InstanceService
 
 beforeEach(async (done) => {
-    await getDBConnection()
-    service = getInstanceService()
+    const connection = await getDBConnection()
+    service = getInstanceService(connection)
     done()
 })
 

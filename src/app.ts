@@ -15,6 +15,9 @@ import {createInstanceRoute} from "./instances/routes/instances.create"
 import {deleteInstanceRoute} from "./instances/routes/instances.delete"
 import {updateInstanceRoute} from "./instances/routes/instances.update"
 import {retrieveProjectInstancesRoute} from "./instances/routes/instances.retrievebyproject"
+import {InstanceService} from "./instances/services/InstanceService"
+import {Connection} from "typeorm"
+import {Instance} from "./instances/models/Instance"
 
 
 // load environment and config
@@ -45,10 +48,12 @@ export const getApp = async () => {
     app.use(bodyParser.urlencoded({ extended: true }))
     app.use(morgan('dev'))
 
-    useRoute(app, createInstanceRoute({ dbConn, event }))
-    useRoute(app, retrieveProjectInstancesRoute({dbConn, event}))
-    useRoute(app, updateInstanceRoute({ dbConn, event }))
-    useRoute(app, deleteInstanceRoute({ dbConn, event }))
+    const instanceService = getInstanceService(dbConn, event)
+
+    useRoute(app, createInstanceRoute(instanceService))
+    useRoute(app, retrieveProjectInstancesRoute(instanceService))
+    useRoute(app, updateInstanceRoute(instanceService))
+    useRoute(app, deleteInstanceRoute(instanceService))
 
     app.use((req, res, next) => next(new RouteNotFound()))
 
@@ -69,4 +74,14 @@ export const getDBConnection = async () => {
         dbConn = await connectToDB({ config })
     }
     return dbConn
+}
+
+let service = null
+const dummyEventHelper = (data) => {}
+export const getInstanceService = (dbConn: Connection, eventHelper = dummyEventHelper): InstanceService => {
+    if (service === null) {
+        const repository = dbConn.getRepository(Instance)
+        service = new InstanceService(repository, eventHelper)
+    }
+    return service
 }

@@ -1,10 +1,10 @@
 import {Route} from "../../core/routing/Route"
-import {getInstanceService} from "../services/InstanceService"
+import {InstanceService} from "../services/InstanceService"
 import {validateBody} from "../../core/validation/schema"
 import {InstanceCreateSchema} from "../models/instance-schemas"
 
 
-export const createInstanceRoute = ({dbConn, event}): Route => ({
+export const createInstanceRoute = (service: InstanceService): Route => ({
     path: '/projects/:projectId/extraction-instances',
 
     method: 'post',
@@ -16,7 +16,6 @@ export const createInstanceRoute = ({dbConn, event}): Route => ({
     ],
 
     controller: async ({params, projectId}) => {
-        const service = getInstanceService(event)
         params.projectId = projectId
         return service.create(params)
     }

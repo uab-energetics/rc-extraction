@@ -1,8 +1,8 @@
 import {Route} from "../../core/routing/Route"
-import {getInstanceService} from "../services/InstanceService"
+import {InstanceService} from "../services/InstanceService"
 import {validateInstanceRequest} from "./instance-validators"
 
-export const deleteInstanceRoute = ({dbConn, event}): Route => ({
+export const deleteInstanceRoute = (service: InstanceService): Route => ({
     path: '/projects/:projectId/extraction-instances/:instanceId',
 
     method: 'delete',
@@ -10,11 +10,10 @@ export const deleteInstanceRoute = ({dbConn, event}): Route => ({
     mapper: (req, res) => ({ instanceId: req.params.instanceId, projectId: req.params.projectId }),
 
     validators: [
-        validateInstanceRequest( getInstanceService(event) )
+        validateInstanceRequest( service )
     ],
 
     controller: async ({instanceId}) => {
-        const service = getInstanceService(event)
         return service.delete(instanceId)
     }
 })

@@ -1,7 +1,7 @@
 import {Route} from "../../core/routing/Route"
-import {getInstanceService} from "../services/InstanceService"
+import {InstanceService} from "../services/InstanceService"
 
-export const retrieveProjectInstancesRoute = ({dbConn, event}): Route => ({
+export const retrieveProjectInstancesRoute = (service: InstanceService): Route => ({
 
     path: '/projects/:projectId/extraction-instances',
 
@@ -12,7 +12,6 @@ export const retrieveProjectInstancesRoute = ({dbConn, event}): Route => ({
     validators: [],
 
     controller: async ({projectId}) => {
-        const service = getInstanceService(event)
         return service.retrieveByProject(projectId)
     }
 })
