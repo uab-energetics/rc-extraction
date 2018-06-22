@@ -1,5 +1,5 @@
 import {getDBConnection} from "../../src/app";
-import {getInstanceService} from "../../src/instances/services/InstanceService";
+import {getInstanceService, InstanceService} from "../../src/instances/services/InstanceService"
 
 const dummyInstanceParams = {
     projectId: "test-project",
@@ -9,14 +9,15 @@ const dummyInstanceParams = {
     codebookVersion: "1.0.0"
 }
 
-const dummyEvent = (data) => {}
+let service: InstanceService
 
+beforeEach(async (done) => {
+    await getDBConnection()
+    service = getInstanceService()
+    done()
+})
 
 test('instance creation and deletion', async (done) => {
-    const connection = await getDBConnection()
-    let service = getInstanceService(connection, dummyEvent)
-
-
     // create instance
     let instance = await service.create(dummyInstanceParams)
     expect(instance).toBeTruthy()
@@ -37,9 +38,6 @@ test('instance creation and deletion', async (done) => {
 
 
 test('instance retrieval by project', async (done) => {
-    const connection = await getDBConnection()
-    let service = getInstanceService(connection, dummyEvent)
-
     let instances = []
 
     let proj1Params = {...dummyInstanceParams}
@@ -67,9 +65,6 @@ test('instance retrieval by project', async (done) => {
 })
 
 test('instance updating', async (done) => {
-    const connection = await getDBConnection()
-    let service = getInstanceService(connection, dummyEvent)
-
     let instance = await service.create(dummyInstanceParams)
     const newDescription = "new description"
     instance = await service.update(instance.id, {

@@ -1,19 +1,25 @@
-import {Connection, Repository} from "typeorm";
+import {Connection, getRepository, Repository} from "typeorm"
 import {Instance} from "../models/Instance";
 import {instanceCreated, instanceDeleted, instanceUpdated} from "../events/instance-events";
 
+const dummyEventHelper = (data) => {}
 
-export const getInstanceService = (dbConn: Connection, eventHelper): InstanceService => {
-    const repository = dbConn.getRepository(Instance)
-    return new InstanceService(repository, eventHelper)
+export const getInstanceService = (eventHelper = null): InstanceService => {
+    return new InstanceService(eventHelper)
 }
 
 export class InstanceService {
 
-    constructor (
-        private repository: Repository<Instance>,
-        private event
-    ) {}
+    readonly repository: Repository<Instance>
+    readonly event: (event) => void
+
+    constructor (eventHelper = null) {
+        this.repository = getRepository(Instance)
+        if (eventHelper === null) {
+            eventHelper = dummyEventHelper
+        }
+        this.event = eventHelper
+    }
 
     async retrieveOne (id: string): Promise<Instance> {
         return await this.repository.findOne(id)
