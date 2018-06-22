@@ -1,6 +1,7 @@
 import {Repository} from "typeorm"
 import {Instance} from "../models/Instance";
 import {instanceCreated, instanceDeleted, instanceUpdated} from "../events/instance-events";
+import {Publication} from "../models/Publication"
 
 
 export class InstanceService {
@@ -36,5 +37,19 @@ export class InstanceService {
         await this.repository.delete(id)
         this.event(instanceDeleted(id))
         return true
+    }
+
+    async addPublications(instanceId, publications: Publication[]) {
+        return await this.repository.createQueryBuilder()
+            .relation(Instance, 'publications')
+            .of(instanceId)
+            .add(publications)
+    }
+
+    async retrievePublications(instanceId): Promise<Publication[]> {
+        return await this.repository.createQueryBuilder()
+            .relation(Instance, 'publications')
+            .of(instanceId)
+            .loadMany()
     }
 }

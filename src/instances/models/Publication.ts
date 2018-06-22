@@ -1,9 +1,10 @@
-import {Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn} from "typeorm";
+import {Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryColumn} from "typeorm"
 import {Instance} from "./Instance";
 import {Task} from "./Task";
 
 
 @Entity()
+@Index(['instance', 'id'], {unique: true})
 export class Publication {
     @PrimaryColumn()
     id: number

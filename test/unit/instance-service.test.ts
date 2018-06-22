@@ -1,7 +1,7 @@
 import {getDBConnection, getInstanceService} from "../../src/app"
 import { InstanceService} from "../../src/instances/services/InstanceService"
 
-const dummyInstanceParams = {
+export const dummyInstanceParams = {
     projectId: "test-project",
     displayName: "Test Instance",
     description: "jkjk",

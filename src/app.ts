@@ -18,6 +18,8 @@ import {retrieveProjectInstancesRoute} from "./instances/routes/instances.retrie
 import {InstanceService} from "./instances/services/InstanceService"
 import {Connection} from "typeorm"
 import {Instance} from "./instances/models/Instance"
+import {PublicationService} from "./instances/services/PublicationService"
+import {Publication} from "./instances/models/Publication"
 
 
 // load environment and config
@@ -76,12 +78,24 @@ export const getDBConnection = async () => {
     return dbConn
 }
 
-let service = null
 const dummyEventHelper = (data) => {}
+
+let _instanceService = null
 export const getInstanceService = (dbConn: Connection, eventHelper = dummyEventHelper): InstanceService => {
-    if (service === null) {
+    if (_instanceService === null) {
         const repository = dbConn.getRepository(Instance)
-        service = new InstanceService(repository, eventHelper)
+        _instanceService = new InstanceService(repository, eventHelper)
     }
-    return service
+    return _instanceService
 }
+
+let _publicationService = null
+export const getPublicationService = (dbConn: Connection, eventHelper = dummyEventHelper): PublicationService => {
+    if (_publicationService === null) {
+        const instanceService = getInstanceService(dbConn, eventHelper)
+        const repository = dbConn.getRepository(Publication)
+        _publicationService = new PublicationService(repository, eventHelper, instanceService)
+    }
+    return _publicationService
+}
+
