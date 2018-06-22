@@ -4,7 +4,7 @@ import {instanceCreated, instanceDeleted, instanceUpdated} from "../events/insta
 
 const dummyEventHelper = (data) => {}
 
-export const getInstanceService = (eventHelper = null): InstanceService => {
+export const getInstanceService = (eventHelper = dummyEventHelper): InstanceService => {
     return new InstanceService(eventHelper)
 }
 
@@ -13,11 +13,8 @@ export class InstanceService {
     readonly repository: Repository<Instance>
     readonly event: (event) => void
 
-    constructor (eventHelper = null) {
+    constructor (eventHelper) {
         this.repository = getRepository(Instance)
-        if (eventHelper === null) {
-            eventHelper = dummyEventHelper
-        }
         this.event = eventHelper
     }
 

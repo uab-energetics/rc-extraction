@@ -21,6 +21,12 @@ test('instances api', async () => {
     const instanceId = createRes.body.id
     expect(instanceId).toBeTruthy()
 
+    // retrieving
+    const projInstancesRes = await request(app)
+        .get(`/projects/${projectId}/extraction-instances`)
+    expect(projInstancesRes.statusCode).toBe(200)
+    expect(projInstancesRes.body[0].id).toBe(instanceId)
+
     // updating
     const updateRes = await request(app)
         .put(`/projects/${projectId}/extraction-instances/${instanceId}`)
