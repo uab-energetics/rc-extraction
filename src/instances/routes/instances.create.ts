@@ -1,7 +1,7 @@
 import {Route} from "../../core/routing/Route"
 import {getInstanceService} from "../services/InstanceService"
 import {validateBody} from "../../core/validation/schema"
-import {InstanceCreateSchema} from "../models/instanceCreateSchema"
+import {InstanceCreateSchema} from "../models/instance-schemas"
 
 
 export const createInstanceRoute = ({dbConn, event}): Route => ({

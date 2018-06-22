@@ -2,7 +2,7 @@ import {Route} from "../../core/routing/Route"
 import {getInstanceService} from "../services/InstanceService"
 import {validateInstanceRequest} from "./instance-validators"
 import {validateBody} from "../../core/validation/schema"
-import {InstanceCreateSchema, InstanceUpdateSchema} from "../models/instanceCreateSchema"
+import {InstanceUpdateSchema} from "../models/instance-schemas"
 
 export const updateInstanceRoute = ({dbConn, event}): Route => ({
     path: '/projects/:projectId/extraction-instances/:instanceId',

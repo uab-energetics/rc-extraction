@@ -15,13 +15,13 @@ export class Instance {
     @Column('varchar')
     displayName: string
 
-    @Column('text')
+    @Column('text', {nullable: true})
     description: string
 
-    @Column('varchar')
+    @Column('varchar', {nullable: true})
     codebookId: string
 
-    @Column('varchar')
+    @Column('varchar', {nullable: true})
     codebookVersion: string
 
     @OneToMany(type => Publication, publication => publication.instance)
