@@ -22,7 +22,7 @@ export class UserService {
     }
 
     async retrieveByInstance(instanceId): Promise<User[]> {
-        return await this.instanceService.retrieveUsers(instanceId)
+        return await this.repository.find({instance: instanceId})
     }
 
     async deleteMany(instanceId, uuids: string[]) {

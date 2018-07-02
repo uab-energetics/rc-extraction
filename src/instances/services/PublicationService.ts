@@ -21,7 +21,7 @@ export class PublicationService {
     }
 
     async retrieveByInstance(instanceId): Promise<Publication[]> {
-        return await this.instanceService.retrievePublications(instanceId)
+        return await this.repository.find({instance: instanceId})
     }
 
     async deleteMany(ids: number[]) {

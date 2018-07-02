@@ -47,24 +47,10 @@ export class InstanceService {
             .add(publications)
     }
 
-    async retrievePublications(instanceId): Promise<Publication[]> {
-        return await this.repository.createQueryBuilder()
-            .relation(Instance, 'publications')
-            .of(instanceId)
-            .loadMany()
-    }
-
     async addUsers(instanceId, users: User[]) {
         return await this.repository.createQueryBuilder()
             .relation(Instance, 'users')
             .of(instanceId)
             .add(users)
-    }
-
-    async retrieveUsers(instanceId): Promise<User[]> {
-        return await this.repository.createQueryBuilder()
-            .relation(Instance, 'users')
-            .of(instanceId)
-            .loadMany()
     }
 }
