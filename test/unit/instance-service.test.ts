@@ -17,6 +17,15 @@ beforeEach(async (done) => {
     done()
 })
 
+let instanceCleanup = []
+afterEach(async (done) => {
+    while (instanceCleanup.length > 0) {
+        const instance = instanceCleanup.pop()
+        await service.delete(instance.id)
+    }
+    done()
+})
+
 test('instance creation and deletion', async (done) => {
     // create instance
     let instance = await service.create(dummyInstanceParams)
@@ -38,8 +47,6 @@ test('instance creation and deletion', async (done) => {
 
 
 test('instance retrieval by project', async (done) => {
-    let instances = []
-
     let proj1Params = {...dummyInstanceParams}
     proj1Params.projectId = 'test-project-1'
 
@@ -47,9 +54,9 @@ test('instance retrieval by project', async (done) => {
     proj2Params.projectId = 'test-project-2'
 
     // create variable number of instances per project
-    instances.push( await service.create(proj1Params) )
-    instances.push( await service.create(proj2Params) )
-    instances.push( await service.create(proj2Params) )
+    instanceCleanup.push( await service.create(proj1Params) )
+    instanceCleanup.push( await service.create(proj2Params) )
+    instanceCleanup.push( await service.create(proj2Params) )
 
     const proj1Instances = await service.retrieveByProject('test-project-1')
     expect(proj1Instances.length).toBe(1)
@@ -57,10 +64,6 @@ test('instance retrieval by project', async (done) => {
     const proj2Instances = await service.retrieveByProject('test-project-2')
     expect(proj2Instances.length).toBe(2)
 
-    // cleanup
-    for (let instance of instances) {
-        await service.delete(instance.id)
-    }
     done()
 })
 
