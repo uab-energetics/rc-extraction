@@ -20,6 +20,8 @@ import {Connection} from "typeorm"
 import {Instance} from "./instances/models/Instance"
 import {PublicationService} from "./instances/services/PublicationService"
 import {Publication} from "./instances/models/Publication"
+import {UserService} from "./instances/services/UserService"
+import {User} from "./instances/models/User"
 
 
 // load environment and config
@@ -97,5 +99,15 @@ export const getPublicationService = (dbConn: Connection, eventHelper = dummyEve
         _publicationService = new PublicationService(repository, eventHelper, instanceService)
     }
     return _publicationService
+}
+
+let _userService = null
+export const getUserService = (dbConn: Connection, eventHelper = dummyEventHelper): UserService => {
+    if (_userService === null) {
+        const instanceService = getInstanceService(dbConn, eventHelper)
+        const repository = dbConn.getRepository(User)
+        _userService = new UserService(repository, eventHelper, instanceService)
+    }
+    return _userService
 }
 

@@ -2,6 +2,7 @@ import {Repository} from "typeorm"
 import {Instance} from "../models/Instance";
 import {instanceCreated, instanceDeleted, instanceUpdated} from "../events/instance-events";
 import {Publication} from "../models/Publication"
+import {User} from "../models/User"
 
 
 export class InstanceService {
@@ -49,6 +50,20 @@ export class InstanceService {
     async retrievePublications(instanceId): Promise<Publication[]> {
         return await this.repository.createQueryBuilder()
             .relation(Instance, 'publications')
+            .of(instanceId)
+            .loadMany()
+    }
+
+    async addUsers(instanceId, users: User[]) {
+        return await this.repository.createQueryBuilder()
+            .relation(Instance, 'users')
+            .of(instanceId)
+            .add(users)
+    }
+
+    async retrieveUsers(instanceId): Promise<User[]> {
+        return await this.repository.createQueryBuilder()
+            .relation(Instance, 'users')
             .of(instanceId)
             .loadMany()
     }

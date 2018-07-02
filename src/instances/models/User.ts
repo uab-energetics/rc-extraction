@@ -12,7 +12,7 @@ export class User {
     @Column('uuid')
     uuid: string
 
-    @ManyToOne(type => Instance, instance => instance.users)
+    @ManyToOne(type => Instance, instance => instance.users, {onDelete: "CASCADE"})
     @JoinColumn()
     instance: Instance[]
 
