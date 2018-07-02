@@ -25,6 +25,11 @@ test('publication adding and removing', async () => {
     let retrievedPubs = await service.retrieveByInstance(instance.id)
     expect(retrievedPubs.length).toBe(publications.length)
 
+    let pubIds = publications.map(pub => pub.id)
+    await service.deleteMany(pubIds)
+    let postDeleteRetrievedPubs = await service.retrieveByInstance(instance.id)
+    expect(postDeleteRetrievedPubs.length).toBe(0)
+
 })
 
 const dummyInstanceParams = instanceParams

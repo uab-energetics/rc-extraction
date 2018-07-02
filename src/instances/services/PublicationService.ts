@@ -24,4 +24,8 @@ export class PublicationService {
         return await this.instanceService.retrievePublications(instanceId)
     }
 
+    async deleteMany(ids: number[]) {
+        return await this.repository.delete(ids)
+    }
+
 }
