@@ -1,16 +1,16 @@
-import {Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryColumn} from "typeorm";
+import {Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm"
 import {Instance} from "./Instance";
 import {Task} from "./Task";
 
 @Entity()
-@Index(['instance', 'email'], {unique: true})
+@Index(['instance', 'uuid'], {unique: true})
 export class User {
 
-    @PrimaryColumn('uuid')
-    id: string
+    @PrimaryGeneratedColumn()
+    id: number
 
-    @Column('varchar')
-    email: string
+    @Column('uuid')
+    uuid: string
 
     @ManyToOne(type => Instance, instance => instance.users)
     @JoinColumn()
