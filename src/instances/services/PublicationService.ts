@@ -1,4 +1,4 @@
-import {Repository} from "typeorm"
+import {In, Repository} from "typeorm"
 import {Publication} from "../models/Publication"
 import {InstanceService} from "./InstanceService"
 
@@ -24,8 +24,8 @@ export class PublicationService {
         return await this.repository.find({instance: instanceId})
     }
 
-    async deleteMany(ids: number[]) {
-        return await this.repository.delete(ids)
+    async deleteMany(instanceId, ids: number[]) {
+        return await this.repository.delete({instance: instanceId, id: In(ids)})
     }
 
 }

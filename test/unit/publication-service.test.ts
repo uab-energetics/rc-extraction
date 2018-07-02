@@ -26,7 +26,7 @@ test('publication adding and removing', async () => {
     expect(retrievedPubs.length).toBe(publications.length)
 
     let pubIds = publications.map(pub => pub.id)
-    await service.deleteMany(pubIds)
+    await service.deleteMany(instance.id, pubIds)
     let postDeleteRetrievedPubs = await service.retrieveByInstance(instance.id)
     expect(postDeleteRetrievedPubs.length).toBe(0)
 
