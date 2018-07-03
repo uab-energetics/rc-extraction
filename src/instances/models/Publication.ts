@@ -17,5 +17,5 @@ export class Publication {
 
     @ManyToOne(type => Instance, instance => instance.publications, {onDelete: 'CASCADE'})
     @JoinColumn()
-    instance: Instance
+    instance: Promise<Instance>
 }

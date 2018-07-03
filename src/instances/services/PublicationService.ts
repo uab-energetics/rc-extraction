@@ -20,8 +20,17 @@ export class PublicationService {
         return pubs
     }
 
+    async retrieveMany(ids: number[]): Promise<Publication[]> {
+        return await this.repository.findByIds(ids)
+    }
+
     async retrieveByInstance(instanceId): Promise<Publication[]> {
         return await this.repository.find({instance: instanceId})
+    }
+
+    async updatePriorities(ids: number[], priority: number): Promise<Publication[]> {
+        await this.repository.update(ids, {priority})
+        return await this.retrieveMany(ids)
     }
 
     async deleteMany(instanceId, ids: number[]) {

@@ -20,12 +20,19 @@ afterEach(async () => {
     await instanceService.delete(instance.id)
 })
 
-test('publication adding and removing', async () => {
+test('publication CRUD', async () => {
     let publications = await service.createMany(instance.id, dummyPubParams)
     let retrievedPubs = await service.retrieveByInstance(instance.id)
     expect(retrievedPubs.length).toBe(publications.length)
+    await expect(retrievedPubs[0].instance).resolves.toEqual(instance)
 
     let pubIds = publications.map(pub => pub.id)
+
+    const newPriority = 1
+    let postUpdatePubs = await service.updatePriorities(pubIds, newPriority)
+    expect(postUpdatePubs.length).toBe(publications.length)
+    expect(postUpdatePubs.every(pub => pub.priority === newPriority)).toBeTruthy()
+
     await service.deleteMany(instance.id, pubIds)
     let postDeleteRetrievedPubs = await service.retrieveByInstance(instance.id)
     expect(postDeleteRetrievedPubs.length).toBe(0)
