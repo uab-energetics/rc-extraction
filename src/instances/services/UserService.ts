@@ -1,7 +1,6 @@
 import {In, Repository} from "typeorm"
 import {InstanceService} from "./InstanceService"
 import {User} from "../models/User"
-import {FindOptionsUtils} from "typeorm/find-options/FindOptionsUtils"
 
 
 export class UserService {
